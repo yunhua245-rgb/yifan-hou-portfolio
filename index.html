@@ -635,10 +635,13 @@
             .exp-item .exp-meta, .exp-item .exp-body, .exp-item .exp-gallery { grid-column: 1; grid-row: auto; }
             .exp-gallery-grid { grid-template-columns: 1fr 1fr; }
             .exp-gallery-grid .pg-item { height: 150px; }
-            .edu-row, .lead-grid { grid-template-columns: 1fr; }
-            .proj-item { grid-template-columns: 1fr; gap: 1rem; }
+            .edu-row, .lead-grid { grid-template-columns: 1fr !important; }
+            .proj-item { grid-template-columns: 1fr !important; gap: 1rem; }
+            .proj-item .exp-gallery { grid-column: 1 !important; grid-row: auto !important; }
+            .proj-item .pg-item--contain img { max-height: 200px !important; }
             .proj-gallery-grid { grid-template-columns: repeat(2, 1fr); }
             .proj-gallery-grid .pg-item.pg-wide { grid-column: span 2; }
+            .lead-grid > div:last-child img { max-height: 200px; }
             .skills-section { grid-template-columns: 1fr; gap: 0.75rem; }
             .sec-header { flex-direction: column; }
             .about-layout { grid-template-columns: 1fr; gap: 2rem; }
