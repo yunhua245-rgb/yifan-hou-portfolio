@@ -1,0 +1,1215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yifan Hou</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300;1,9..40,400&family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ink: #1a1a1a;
+            --ink-light: #555;
+            --ink-muted: #999;
+            --ink-faint: #bbb;
+            --bg: #f6f4f0;
+            --bg-card: #fffffe;
+            --accent: #2d2d2d;
+            --rule: #e0dcd6;
+            --rule-light: #eae7e2;
+            --serif: 'Instrument Serif', 'Noto Serif SC', Georgia, serif;
+            --serif-cn: 'Noto Serif SC', 'Source Han Serif SC', 'SimSun', serif;
+            --sans: 'DM Sans', 'Noto Sans SC', -apple-system, sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; font-size: 17px; }
+
+        body {
+            font-family: var(--sans);
+            background: var(--bg);
+            color: var(--ink);
+            line-height: 1.65;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        ::selection { background: #1a1a1a; color: #f6f4f0; }
+
+        /* Language system */
+        [data-lang="zh"] { display: none; }
+        body.lang-zh [data-lang="zh"] { display: initial; }
+        body.lang-zh [data-lang="en"] { display: none; }
+        div[data-lang="zh"], p[data-lang="zh"], li[data-lang="zh"], h1[data-lang="zh"],
+        h2[data-lang="zh"], h3[data-lang="zh"], h4[data-lang="zh"], span[data-lang="zh"],
+        section[data-lang="zh"], small[data-lang="zh"] { display: none; }
+        body.lang-zh div[data-lang="zh"], body.lang-zh p[data-lang="zh"],
+        body.lang-zh li[data-lang="zh"], body.lang-zh h1[data-lang="zh"],
+        body.lang-zh h2[data-lang="zh"], body.lang-zh h3[data-lang="zh"],
+        body.lang-zh h4[data-lang="zh"], body.lang-zh span[data-lang="zh"],
+        body.lang-zh section[data-lang="zh"], body.lang-zh small[data-lang="zh"] { display: block; }
+        body.lang-zh div[data-lang="en"], body.lang-zh p[data-lang="en"],
+        body.lang-zh li[data-lang="en"], body.lang-zh h1[data-lang="en"],
+        body.lang-zh h2[data-lang="en"], body.lang-zh h3[data-lang="en"],
+        body.lang-zh h4[data-lang="en"], body.lang-zh span[data-lang="en"],
+        body.lang-zh section[data-lang="en"], body.lang-zh small[data-lang="en"] { display: none; }
+        body.lang-zh span[data-lang="zh"] { display: inline; }
+        body.lang-zh span[data-lang="en"] { display: none; }
+        span[data-lang="zh"] { display: none; }
+        span[data-lang="en"] { display: inline; }
+        body.lang-zh .stat-block[data-lang="zh"] { display: flex; }
+        body.lang-zh .stat-block[data-lang="en"] { display: none; }
+        .stat-block[data-lang="zh"] { display: none; }
+        body.lang-zh .contact-row[data-lang="zh"] { display: flex; }
+        body.lang-zh .contact-row[data-lang="en"] { display: none; }
+        .contact-row[data-lang="zh"] { display: none; }
+        body.lang-zh .highlight-item[data-lang="zh"] { display: block; }
+        body.lang-zh .highlight-item[data-lang="en"] { display: none; }
+        .highlight-item[data-lang="zh"] { display: none; }
+
+        /* ═══ NAV ═══ */
+        nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            background: rgba(246,244,240,0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--rule-light);
+        }
+        .nav-inner {
+            max-width: 1120px; margin: 0 auto;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 2rem; height: 56px;
+        }
+        .nav-name {
+            font-family: var(--serif); font-size: 1.15rem; font-style: italic;
+            color: var(--ink); text-decoration: none; letter-spacing: -0.02em;
+        }
+        .nav-right { display: flex; align-items: center; gap: 2rem; }
+        .nav-links { display: flex; gap: 1.75rem; list-style: none; }
+        .nav-links a {
+            text-decoration: none; color: var(--ink-muted); font-size: 0.76rem;
+            font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase;
+            transition: color 0.25s;
+        }
+        .nav-links a:hover { color: var(--ink); }
+
+        .lang-sw {
+            display: flex; gap: 0; border: 1px solid var(--rule); border-radius: 4px; overflow: hidden;
+        }
+        .lang-sw button {
+            border: none; background: transparent; padding: 0.3rem 0.7rem;
+            font-size: 0.7rem; font-weight: 500; cursor: pointer;
+            color: var(--ink-muted); transition: all 0.2s; font-family: var(--sans);
+        }
+        .lang-sw button.active { background: var(--ink); color: var(--bg); }
+
+        /* ═══ HERO ═══ */
+        .hero {
+            min-height: 100vh; display: flex; align-items: flex-end;
+            padding: 0 2rem 6rem; position: relative;
+        }
+        .hero-inner {
+            max-width: 1120px; margin: 0 auto; width: 100%;
+            padding-top: 10rem;
+            display: grid; grid-template-columns: 1fr 360px; gap: 4rem;
+            align-items: center;
+        }
+        .hero-portrait {
+            width: 360px; height: 480px; overflow: hidden;
+            border-radius: 6px; position: relative;
+        }
+        .hero-portrait img {
+            width: 100%; height: 100%; object-fit: cover; object-position: center top;
+        }
+
+        .hero-label {
+            font-size: 0.75rem; font-weight: 500; letter-spacing: 0.15em;
+            text-transform: uppercase; color: var(--ink-muted); margin-bottom: 1rem;
+            border-left: 2px solid var(--ink); padding-left: 0.8rem;
+        }
+        .hero h1 {
+            font-family: var(--serif); font-weight: 400;
+            font-size: clamp(3.6rem, 8vw, 6rem);
+            line-height: 1.0; letter-spacing: -0.04em;
+            color: var(--ink); margin-bottom: 1.5rem;
+        }
+        .hero-tagline {
+            font-size: 1.25rem; color: var(--ink);
+            letter-spacing: 0.02em; margin-bottom: 0.6rem;
+            font-weight: 500;
+        }
+        .hero-motto {
+            font-family: var(--serif); font-style: italic;
+            font-size: 1.15rem; color: var(--ink-muted);
+            margin-bottom: 2.5rem;
+        }
+        .hero h1 em {
+            font-style: italic; font-weight: 400;
+            color: var(--ink-light);
+        }
+        /* Chinese hero title — use serif CN, smaller size, no italic */
+        .hero h1[data-lang="zh"] {
+            font-family: var(--serif-cn), var(--serif);
+            font-size: clamp(2.8rem, 6vw, 4.5rem);
+            line-height: 1.15; letter-spacing: 0.02em;
+        }
+        .hero h1[data-lang="zh"] em {
+            font-style: normal; font-weight: 300;
+            color: var(--ink-light);
+        }
+        .hero-desc {
+            max-width: 540px; font-size: 0.95rem; color: var(--ink-light);
+            line-height: 1.75; margin-bottom: 3rem; font-weight: 300;
+        }
+
+        .hero-stats {
+            display: flex; gap: 3rem; padding-top: 2.5rem;
+            border-top: 1px solid var(--rule);
+        }
+        .stat-block { display: flex; flex-direction: column; }
+        .stat-num {
+            font-family: var(--serif); font-size: 2rem;
+            letter-spacing: -0.03em; color: var(--ink);
+        }
+        .stat-label {
+            font-size: 0.7rem; color: var(--ink-muted);
+            letter-spacing: 0.05em; text-transform: uppercase; margin-top: 0.15rem;
+        }
+
+        /* ═══ SECTIONS ═══ */
+        .section {
+            max-width: 1120px; margin: 0 auto;
+            padding: 7rem 2rem;
+        }
+        .section-rule {
+            border: none; border-top: 1px solid var(--rule);
+            margin: 0 auto; max-width: 1120px;
+        }
+        .sec-header {
+            display: flex; justify-content: space-between; align-items: baseline;
+            margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;
+        }
+        .sec-num {
+            font-family: var(--serif); font-size: 1.6rem; font-style: italic;
+            color: var(--ink-faint); margin-right: 1.5rem;
+        }
+        .sec-title {
+            font-family: var(--serif); font-size: 2.2rem; font-weight: 400;
+            letter-spacing: -0.02em; color: var(--ink); flex: 1;
+        }
+        .sec-sub {
+            font-size: 0.72rem; color: var(--ink-muted); letter-spacing: 0.08em;
+            text-transform: uppercase; font-weight: 500;
+        }
+
+        /* ═══ EXPERIENCE ═══ */
+        .exp-item {
+            display: grid; grid-template-columns: 200px 1fr 240px;
+            gap: 2rem 3rem; padding: 2.5rem 0;
+            border-bottom: 1px solid var(--rule-light);
+        }
+        .exp-item:last-child { border-bottom: none; }
+        .exp-item.no-gallery {
+            grid-template-columns: 200px 1fr;
+        }
+        .exp-meta { grid-column: 1; grid-row: 1 / span 3; }
+        .exp-body { grid-column: 2; }
+        .exp-gallery { grid-column: 3; grid-row: 1 / span 3; align-self: start; }
+        .exp-company {
+            font-family: var(--serif); font-size: 1.15rem; color: var(--ink);
+            letter-spacing: -0.01em;
+        }
+        .exp-role {
+            font-size: 0.78rem; color: var(--ink-light); margin-top: 0.3rem;
+            font-weight: 500;
+        }
+        .exp-date {
+            font-size: 0.72rem; color: var(--ink-muted); margin-top: 0.5rem;
+            letter-spacing: 0.02em;
+        }
+        .exp-body {}
+        .exp-body h4 {
+            font-size: 0.82rem; font-weight: 500; color: var(--ink);
+            margin-bottom: 0.5rem; margin-top: 1.25rem; letter-spacing: 0.01em;
+        }
+        .exp-body h4:first-child { margin-top: 0; }
+        .exp-body p {
+            font-size: 0.85rem; color: var(--ink-light); line-height: 1.7;
+            margin-bottom: 0.5rem;
+        }
+        .exp-body ul { list-style: none; padding: 0; }
+        .exp-body li {
+            font-size: 0.85rem; color: var(--ink-light); line-height: 1.7;
+            padding-left: 1rem; position: relative; margin-bottom: 0.4rem;
+        }
+        .exp-body li::before {
+            content: '—'; position: absolute; left: 0; color: var(--ink-faint);
+            font-size: 0.75rem;
+        }
+        .exp-summary {
+            font-size: 0.85rem; color: var(--ink-light); line-height: 1.7;
+            margin-bottom: 0.4rem;
+        }
+
+        /* ═══ EDUCATION ═══ */
+        .edu-row {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
+            background: var(--rule-light); align-items: stretch;
+        }
+        .edu-item {
+            background: var(--bg); padding: 2.5rem;
+            display: flex; flex-direction: column;
+        }
+        .edu-item h3 {
+            font-family: var(--serif); font-size: 1.15rem; font-weight: 400;
+            color: var(--ink); margin-bottom: 0.25rem;
+        }
+        .edu-badge-inline {
+            display: inline-block; vertical-align: middle;
+            font-family: var(--sans); font-size: 0.6rem; font-weight: 600;
+            color: var(--ink-muted); letter-spacing: 0.04em;
+            border: 1px solid var(--rule); padding: 0.15rem 0.5rem;
+            border-radius: 2px; margin-left: 0.5rem;
+            position: relative; top: -1px;
+        }
+        .edu-degree {
+            font-size: 0.82rem; font-weight: 500; color: var(--ink-light);
+            margin-bottom: 0.15rem;
+        }
+        .edu-date {
+            font-size: 0.72rem; color: var(--ink-muted); margin-bottom: 1rem;
+            letter-spacing: 0.02em;
+        }
+        .edu-detail {
+            font-size: 0.82rem; color: var(--ink-light); line-height: 1.65;
+        }
+        .edu-badge {
+            display: inline-block; margin-top: 0.85rem;
+            font-size: 0.7rem; font-weight: 500; color: var(--ink-muted);
+            border: 1px solid var(--rule); padding: 0.25rem 0.7rem;
+            border-radius: 2px; letter-spacing: 0.04em;
+        }
+        .edu-photo {
+            margin-top: auto; padding-top: 1.2rem;
+            width: 100%; max-width: 280px; height: 360px;
+            overflow: hidden; border-radius: 4px;
+        }
+        .edu-photo img {
+            width: 100%; height: 100%; object-fit: cover;
+            object-position: center top;
+            filter: grayscale(0.1);
+            transition: filter 0.4s;
+        }
+        .edu-photo:hover img { filter: grayscale(0); }
+
+        /* ═══ PROJECTS ═══ */
+        .proj-list {}
+        .proj-item {
+            display: grid; grid-template-columns: 280px 1fr;
+            gap: 3rem; padding: 2.5rem 0;
+            border-bottom: 1px solid var(--rule-light);
+        }
+        .proj-item:last-child { border-bottom: none; }
+        .proj-left {}
+        .proj-item h3 {
+            font-family: var(--serif); font-size: 1.15rem; font-weight: 400;
+            color: var(--ink); line-height: 1.35; margin-bottom: 0.4rem;
+        }
+        .proj-tag {
+            font-size: 0.7rem; font-weight: 500; color: var(--ink-muted);
+            letter-spacing: 0.04em; margin-bottom: 0.15rem;
+        }
+        .proj-date {
+            font-size: 0.72rem; color: var(--ink-faint); letter-spacing: 0.02em;
+        }
+        .proj-right {}
+        .proj-right p {
+            font-size: 0.85rem; color: var(--ink-light); line-height: 1.7;
+        }
+        .proj-outcome {
+            margin-top: 1rem; font-size: 0.78rem; color: var(--ink);
+            font-weight: 500; padding-left: 0.85rem;
+            border-left: 2px solid var(--ink);
+        }
+
+        /* ═══ PROJECT GALLERY ═══ */
+        /* ═══ EXPERIENCE GALLERY ═══ */
+        .exp-gallery {
+            margin-top: 0;
+            align-self: start;
+        }
+        .exp-gallery--horizontal {
+            grid-column: 2 / 4; align-self: start;
+            margin-top: 1.2rem;
+        }
+        .exp-gallery--horizontal .exp-gallery-grid {
+            grid-template-columns: 1fr 1fr;
+        }
+        .exp-gallery-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 3px;
+        }
+        .exp-gallery-grid--2col {
+            grid-template-columns: 1fr 1fr;
+        }
+        .exp-gallery-grid .pg-item {
+            height: 150px; overflow: hidden; position: relative;
+        }
+        .exp-gallery-grid .pg-item img {
+            width: 100%; height: 100%; object-fit: cover;
+            filter: grayscale(0.1);
+            transition: filter 0.4s, transform 0.5s;
+        }
+        .exp-gallery-grid .pg-item:hover img {
+            filter: grayscale(0); transform: scale(1.02);
+        }
+        .exp-gallery-grid .pg-item.pg-item--contain {
+            height: auto; overflow: visible;
+        }
+        .exp-gallery-grid .pg-item.pg-item--contain img {
+            object-fit: contain; height: auto;
+        }
+
+        .proj-gallery {
+            grid-column: 1 / -1;
+            padding-top: 1.5rem;
+        }
+        .proj-gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 3px;
+        }
+        .proj-gallery-grid .pg-item {
+            overflow: hidden; position: relative;
+            border-radius: 2px;
+            height: 180px;
+        }
+        .proj-gallery-grid .pg-item img {
+            width: 100%; height: 100%; display: block;
+            object-fit: cover;
+            filter: grayscale(0.1);
+            transition: filter 0.4s, transform 0.5s;
+        }
+        .proj-gallery-grid .pg-item:hover img {
+            filter: grayscale(0); transform: scale(1.01);
+        }
+        .pg-caption {
+            position: absolute; bottom: 0; left: 0; right: 0;
+            padding: 0.4rem 0.6rem;
+            background: rgba(246,244,240,0.85);
+            font-size: 0.62rem; color: var(--ink-muted);
+            letter-spacing: 0.04em; opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .pg-item:hover .pg-caption { opacity: 1; }
+
+        /* ═══ SKILLS ═══ */
+        .skills-section {
+            display: grid; grid-template-columns: 180px 1fr; gap: 2rem;
+            padding: 1.5rem 0; border-bottom: 1px solid var(--rule-light);
+        }
+        .skills-section:last-child { border-bottom: none; }
+        .skills-cat {
+            font-size: 0.72rem; font-weight: 500; color: var(--ink-muted);
+            text-transform: uppercase; letter-spacing: 0.08em; padding-top: 0.1rem;
+        }
+        .skills-list {
+            display: flex; flex-wrap: wrap; gap: 0.5rem;
+        }
+        .skill-item {
+            font-size: 0.8rem; color: var(--ink-light);
+            padding: 0.35rem 0.85rem; background: var(--bg-card);
+            border: 1px solid var(--rule-light); border-radius: 2px;
+            transition: all 0.2s;
+        }
+        .skill-item:hover { color: var(--ink); border-color: var(--ink); }
+
+        /* ═══ LEADERSHIP ═══ */
+        .lead-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
+            background: var(--rule-light);
+        }
+        .lead-item {
+            background: var(--bg); padding: 2.5rem;
+        }
+        .lead-item h3 {
+            font-family: var(--serif); font-size: 1.05rem; font-weight: 400;
+            color: var(--ink); margin-bottom: 0.2rem;
+        }
+        .lead-role {
+            font-size: 0.78rem; font-weight: 500; color: var(--ink-light);
+        }
+        .lead-date {
+            font-size: 0.72rem; color: var(--ink-muted); margin-bottom: 0.85rem;
+        }
+        .lead-desc {
+            font-size: 0.82rem; color: var(--ink-light); line-height: 1.65;
+        }
+
+        /* ═══ PHOTO BREAK ═══ */
+        .photo-break {
+            max-width: 1120px; margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+        .photo-break-inner {
+            display: grid; grid-template-columns: 1.2fr 1fr; gap: 1px;
+            background: var(--rule-light); overflow: hidden;
+        }
+        .photo-break-img {
+            height: 380px; overflow: hidden; background: var(--bg);
+        }
+        .photo-break-img img {
+            width: 100%; height: 100%; object-fit: cover;
+            filter: grayscale(0.1);
+            transition: filter 0.5s, transform 0.5s;
+        }
+        .photo-break-img:hover img { filter: grayscale(0); transform: scale(1.015); }
+        .photo-break-text {
+            background: var(--bg); padding: 3rem;
+            display: flex; flex-direction: column; justify-content: center;
+        }
+        .photo-break-text blockquote {
+            font-family: var(--serif); font-size: 1.3rem; font-style: italic;
+            color: var(--ink); line-height: 1.5; letter-spacing: -0.01em;
+            margin-bottom: 1rem;
+        }
+        .photo-break-text cite {
+            font-style: normal; font-size: 0.72rem; color: var(--ink-muted);
+            letter-spacing: 0.05em; text-transform: uppercase;
+        }
+
+        /* ═══ HIGHLIGHT MOMENT ═══ */
+        .highlight-moment {
+            margin: 0;
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        .highlight-moment::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: radial-gradient(ellipse at 30% 50%, rgba(255,255,255,0.03) 0%, transparent 60%);
+            pointer-events: none;
+        }
+        .highlight-moment-inner {
+            max-width: 1120px; margin: 0 auto;
+            display: grid; grid-template-columns: 1.2fr 1fr; gap: 1px;
+            overflow: hidden;
+            border-radius: 4px;
+            background: rgba(255,255,255,0.05);
+        }
+        .highlight-moment .photo-break-img {
+            height: 380px; overflow: hidden;
+            background: #111;
+        }
+        .highlight-moment .photo-break-img img {
+            width: 100%; height: 100%; object-fit: cover;
+            filter: grayscale(0.1);
+            transition: filter 0.5s, transform 0.5s;
+        }
+        .highlight-moment .photo-break-img:hover img {
+            filter: grayscale(0); transform: scale(1.015);
+        }
+        .highlight-moment .photo-break-text {
+            background: transparent; padding: 3rem;
+            display: flex; flex-direction: column; justify-content: center;
+        }
+        .highlight-moment .photo-break-text blockquote {
+            font-family: var(--serif); font-size: 1.3rem; font-style: italic;
+            color: #f6f4f0; line-height: 1.5; letter-spacing: -0.01em;
+            margin-bottom: 1rem;
+        }
+        .highlight-moment .photo-break-text cite {
+            font-style: normal; font-size: 0.72rem; color: rgba(246,244,240,0.5);
+            letter-spacing: 0.05em; text-transform: uppercase;
+        }
+
+        /* ═══ ABOUT ═══ */
+        .about-layout {
+            display: grid; grid-template-columns: 1fr 300px; gap: 4rem;
+            align-items: start;
+        }
+        .about-block {
+            max-width: 680px;
+        }
+        .about-photo {
+            width: 300px; height: 420px; overflow: hidden; border-radius: 4px;
+            position: sticky; top: 80px;
+        }
+        .about-photo img {
+            width: 100%; height: 100%; object-fit: cover; object-position: center top;
+            filter: grayscale(0.1);
+            transition: filter 0.4s;
+        }
+        .about-photo:hover img { filter: grayscale(0); }
+        .about-block p {
+            font-size: 0.95rem; color: var(--ink-light);
+            line-height: 1.8; margin-bottom: 1.25rem; font-weight: 300;
+        }
+        .about-block strong { color: var(--ink); font-weight: 500; }
+
+        .about-tags {
+            display: flex; gap: 2.5rem; margin-top: 2.5rem;
+            padding-top: 2rem; border-top: 1px solid var(--rule-light);
+        }
+        .highlight-item {}
+        .highlight-item h4 {
+            font-size: 0.78rem; font-weight: 500; color: var(--ink);
+            margin-bottom: 0.15rem;
+        }
+        .highlight-item p {
+            font-size: 0.72rem; color: var(--ink-muted); margin-bottom: 0;
+            font-weight: 400;
+        }
+
+
+        /* ═══ FOOTER SOCIAL THUMBS ═══ */
+        .footer-social-thumbs {
+            display: flex; gap: 0.8rem; margin-bottom: 1rem;
+            align-items: flex-start;
+        }
+        .footer-social-thumbs img {
+            height: 140px; width: auto; border-radius: 4px;
+            border: 1px solid var(--rule);
+        }
+
+        /* ═══ FOOTER ═══ */
+        footer {
+            max-width: 1120px; margin: 0 auto;
+            padding: 4rem 2rem 3rem;
+            border-top: 1px solid var(--rule);
+        }
+        .footer-top {
+            display: flex; justify-content: space-between; align-items: flex-start;
+            margin-bottom: 3rem; flex-wrap: wrap; gap: 2rem;
+        }
+        .footer-left {
+            display: flex; flex-direction: column; gap: 1.2rem;
+        }
+        .footer-brand {
+            font-family: var(--serif); font-size: 2.5rem; font-style: italic;
+            color: var(--ink); letter-spacing: -0.03em; line-height: 1;
+        }
+        .footer-contact {}
+        .contact-col {}
+        .contact-row {
+            display: flex; align-items: center; gap: 0.5rem;
+            font-size: 0.82rem; color: var(--ink-light); margin-bottom: 0.5rem;
+        }
+        .contact-row a { color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--rule); transition: border-color 0.2s; }
+        .contact-row a:hover { border-color: var(--ink); }
+        .footer-copy {
+            font-size: 0.68rem; color: var(--ink-faint); letter-spacing: 0.04em;
+        }
+
+        /* ═══ ANIMATIONS ═══ */
+        .reveal {
+            opacity: 0; transform: translateY(20px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+        .reveal.vis { opacity: 1; transform: none; }
+        .reveal-d1 { transition-delay: 0.08s; }
+        .reveal-d2 { transition-delay: 0.16s; }
+        .reveal-d3 { transition-delay: 0.24s; }
+
+        /* ═══ RESPONSIVE ═══ */
+        @media (max-width: 768px) {
+            html { font-size: 16px; }
+            .nav-links { display: none; }
+            .hero { padding: 0 1.25rem 4rem; }
+            .hero-inner { padding-top: 7rem; grid-template-columns: 1fr; gap: 2rem; }
+            .hero-portrait { width: 200px; height: 260px; order: -1; }
+            .hero-stats { flex-wrap: wrap; gap: 2rem; }
+            .section { padding: 4rem 1.25rem; }
+            .exp-item { grid-template-columns: 1fr; gap: 0.75rem; }
+            .exp-item .exp-meta, .exp-item .exp-body, .exp-item .exp-gallery { grid-column: 1; grid-row: auto; }
+            .exp-gallery-grid { grid-template-columns: 1fr 1fr; }
+            .exp-gallery-grid .pg-item { height: 150px; }
+            .edu-row, .lead-grid { grid-template-columns: 1fr; }
+            .proj-item { grid-template-columns: 1fr; gap: 1rem; }
+            .proj-gallery-grid { grid-template-columns: repeat(3, 1fr); }
+            .skills-section { grid-template-columns: 1fr; gap: 0.75rem; }
+            .sec-header { flex-direction: column; }
+            .about-layout { grid-template-columns: 1fr; gap: 2rem; }
+            .about-photo { width: 100%; height: 300px; position: static; }
+            .about-tags { flex-direction: column; gap: 1.5rem; }
+            .photo-break { padding: 2rem 1.25rem; }
+            .photo-break-inner { grid-template-columns: 1fr; }
+            .photo-break-img { height: 260px; }
+            .highlight-moment { padding: 2rem 1.25rem; }
+            .highlight-moment-inner { grid-template-columns: 1fr; }
+            .highlight-moment .photo-break-img { height: 260px; }
+            .footer-top { flex-direction: column; }
+            .nav-inner { padding: 0 1.25rem; }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="nav-inner">
+        <a href="#" class="nav-name">Yifan.</a>
+        <div class="nav-right">
+            <ul class="nav-links">
+                <li><a href="#education"><span data-lang="en">Education</span><span data-lang="zh">教育</span></a></li>
+                <li><a href="#experience"><span data-lang="en">Experience</span><span data-lang="zh">经历</span></a></li>
+                <li><a href="#projects"><span data-lang="en">Projects</span><span data-lang="zh">项目</span></a></li>
+                <li><a href="#about"><span data-lang="en">About</span><span data-lang="zh">关于</span></a></li>
+            </ul>
+            <div class="lang-sw">
+                <button id="btn-en" class="active" onclick="switchLang('en')">EN</button>
+                <button id="btn-zh" onclick="switchLang('zh')">中</button>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- ══ HERO ══ -->
+<section class="hero">
+    <div class="hero-inner">
+        <div class="hero-text">
+            <div class="hero-label reveal"><span data-lang="en">AI Product Manager</span><span data-lang="zh">AI产品经理</span></div>
+            <h1 class="reveal reveal-d1" data-lang="en">Yifan Hou</h1>
+            <h1 class="reveal reveal-d1" data-lang="zh">侯怡帆</h1>
+            <p class="hero-tagline reveal reveal-d2" data-lang="en">Design Background × Data Thinking × Cross-team Execution</p>
+            <p class="hero-tagline reveal reveal-d2" data-lang="zh">设计背景 × 数据思维 × 跨团队执行力</p>
+            <p class="hero-motto reveal reveal-d2" data-lang="en">See trends. Understand scenarios. Know users.</p>
+            <p class="hero-motto reveal reveal-d2" data-lang="zh">看见趋势、理解场景、读懂用户</p>
+            <div class="hero-stats reveal reveal-d3">
+                <div class="stat-block" data-lang="en"><span class="stat-num">3+</span><span class="stat-label">Internships</span></div>
+                <div class="stat-block" data-lang="en"><span class="stat-num">3.86</span><span class="stat-label">GPA / 4.0</span></div>
+                <div class="stat-block" data-lang="en"><span class="stat-num">Top 6%</span><span class="stat-label">Class Rank</span></div>
+                <div class="stat-block" data-lang="en"><span class="stat-num">985</span><span class="stat-label">University</span></div>
+                <div class="stat-block" data-lang="zh"><span class="stat-num">3+</span><span class="stat-label">段实习</span></div>
+                <div class="stat-block" data-lang="zh"><span class="stat-num">3.86</span><span class="stat-label">GPA / 4.0</span></div>
+                <div class="stat-block" data-lang="zh"><span class="stat-num">前6%</span><span class="stat-label">年级排名</span></div>
+                <div class="stat-block" data-lang="zh"><span class="stat-num">985</span><span class="stat-label">高校</span></div>
+            </div>
+        </div>
+        <div class="hero-portrait reveal reveal-d2">
+            <img src="IMG_6666.JPG" alt="Yifan Hou">
+        </div>
+    </div>
+</section>
+
+<hr class="section-rule">
+
+<!-- ══ EDUCATION ══ -->
+<section class="section" id="education">
+    <div class="sec-header reveal">
+        <div>
+            <span class="sec-num">01</span>
+            <span class="sec-title" data-lang="en">Education</span>
+            <span class="sec-title" data-lang="zh">教育背景</span>
+        </div>
+    </div>
+    <div class="edu-row reveal">
+        <div class="edu-item">
+            <h3 data-lang="en">Beijing Institute of Technology <span class="edu-badge-inline">985</span></h3>
+            <h3 data-lang="zh">北京理工大学 <span class="edu-badge-inline">985</span></h3>
+            <div class="edu-degree" data-lang="en">Master of Design, Industrial Design</div>
+            <div class="edu-degree" data-lang="zh">设计学硕士，工业设计方向</div>
+            <div class="edu-date">2024.09 — 2027.07</div>
+            <div class="edu-detail" data-lang="en">Design Strategy & Management, Design Methodology, Complex Information System Design</div>
+            <div class="edu-detail" data-lang="zh">设计策略与管理、设计方法论、复杂信息系统设计研究</div>
+            <span class="edu-badge" data-lang="en">Top 10% · 88/100</span>
+            <span class="edu-badge" data-lang="zh">年级前10% · 88/100</span>
+            <div class="edu-photo">
+                <img src="bit-welcome.jpg" alt="BIT School of Design and Arts welcome">
+            </div>
+        </div>
+        <div class="edu-item">
+            <h3 data-lang="en">Beijing University of Technology <span class="edu-badge-inline">211</span></h3>
+            <h3 data-lang="zh">北京工业大学 <span class="edu-badge-inline">211</span></h3>
+            <div class="edu-degree" data-lang="en">Bachelor of Engineering, Industrial Design</div>
+            <div class="edu-degree" data-lang="zh">工学学士，工业设计</div>
+            <div class="edu-date">2020.09 — 2024.07</div>
+            <div class="edu-detail" data-lang="en">UX Design, HCI, Product & Service System Design, Ergonomics</div>
+            <div class="edu-detail" data-lang="zh">用户体验设计、人机交互设计、产品与服务系统设计、工效学</div>
+            <span class="edu-badge">GPA 3.86/4.0 · Rank 2/31</span>
+            <div class="edu-photo">
+                <img src="bjut-graduation.jpg" alt="Graduation from BJUT">
+            </div>
+        </div>
+    </div>
+</section>
+
+<hr class="section-rule">
+
+<!-- ══ EXPERIENCE ══ -->
+<section class="section" id="experience">
+    <div class="sec-header reveal">
+        <div>
+            <span class="sec-num">02</span>
+            <span class="sec-title" data-lang="en">Internship</span>
+            <span class="sec-title" data-lang="zh">实习经历</span>
+        </div>
+    </div>
+
+    <div class="exp-item reveal">
+        <div class="exp-meta">
+            <div class="exp-company" data-lang="en">NetEase</div>
+            <div class="exp-company" data-lang="zh">网易</div>
+            <div class="exp-role" data-lang="en">AI Product Manager</div>
+            <div class="exp-role" data-lang="zh">AI产品经理</div>
+            <div class="exp-date">2026.03 — <span data-lang="en">Present</span><span data-lang="zh">至今</span></div>
+        </div>
+        <div class="exp-body" data-lang="en">
+            <p>Led the 0-to-1 development of NetEase Smart Mailbox cross-border B2B procurement Agent — deeply exploring real business needs and B2B buyer decision-making patterns, driving business direction adjustments and product capability support.</p>
+            <h4>AI Agent Skill System Development</h4>
+            <ul>
+                <li>Led the design of AI Agent's Skill capability architecture, mapping core task chains in cross-border B2B procurement sourcing (supplier search → inquiry → quote comparison → order tracking → logistics clearance), decomposed into standardized Skill modules.</li>
+                <li>Built Skill library management system, defining input/output specs, trigger conditions, and composition/orchestration rules to support Agent's autonomous decision-making and task execution in complex procurement scenarios.</li>
+                <li>Designed and deployed Skill evaluation Workflow, establishing quantitative assessment system covering accuracy, recall, and task completion rate, driving iterative Skill capability optimization.</li>
+            </ul>
+            <h4>B2B Buyer Insights & Demand Discovery</h4>
+            <ul>
+                <li>Reached overseas B2B buyer groups via WhatsApp through interviews and behavioral analysis, uncovering procurement decision pain points (e.g., low supplier screening efficiency, high cross-language communication costs, unclear procurement processes).</li>
+                <li>Translated user insights into product requirements, outputting feature priority rankings and evaluation iteration roadmaps, driving deep alignment between product and buyers' actual procurement workflows.</li>
+                <li>Continuously tracked buyer usage feedback, establishing a "demand collection → feature verification → outcome review" closed loop to improve product-business scenario fit.</li>
+            </ul>
+        </div>
+        <div class="exp-body" data-lang="zh">
+            <p>网易智邮箱跨境电商B2B采购Agent产品0-1搭建，深入挖掘业务场景真实需求与B2B卖家采购决策特点，主导业务方向调整与产品能力支持。</p>
+            <h4>AI Agent能力Skill体系搭建</h4>
+            <ul>
+                <li>主导设计AI Agent的Skill能力架构，梳理跨境B2B采购寻源场景下的核心任务链路（供应商搜索→询盘→报价对比→订单跟踪→物流清关），拆解为标准化的Skill模块。</li>
+                <li>搭建Skill库管理体系，定义Skill的输入输出规范、触发条件与组合编排规则，支撑Agent在复杂采购场景下的自主决策与任务执行。</li>
+                <li>设计并落地Skill评测Workflow，建立覆盖准确率、召回率、任务完成率的量化评估体系，驱动Skill能力迭代优化。</li>
+            </ul>
+            <h4>B2B买家用户洞察与需求挖掘</h4>
+            <ul>
+                <li>经由WhatsAPP深度触达海外B2B买家群体，通过访谈与行为分析，挖掘采购决策痛点（如供应商筛选效率低、跨语言沟通成本高、采购流程不明等）。</li>
+                <li>将用户洞察转化为产品需求，输出功能优先级排序与测评迭代路线图，推动产品与买家实际采购流程的深度契合。</li>
+                <li>持续跟踪买家使用反馈，建立"需求采集→功能验证→效果复盘"闭环，提升产品与业务场景匹配度。</li>
+            </ul>
+        </div>
+        <div class="exp-gallery">
+            <div class="exp-gallery-grid">
+                <div class="pg-item">
+                    <img src="netease-badge.jpg" alt="NetEase employee badge">
+                    <span class="pg-caption" data-lang="en">NetEase Welcome Kit</span>
+                    <span class="pg-caption" data-lang="zh">网易入职欢迎礼</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="exp-item reveal">
+        <div class="exp-meta">
+            <div class="exp-company" data-lang="en">Baidu</div>
+            <div class="exp-company" data-lang="zh">百度</div>
+            <div class="exp-role" data-lang="en">AI Product Manager</div>
+            <div class="exp-role" data-lang="zh">AI产品经理</div>
+            <div class="exp-date">2025.08 — 2026.02</div>
+        </div>
+        <div class="exp-body" data-lang="en">
+            <p>Supported digital human e-commerce live streaming technical capability evaluation, optimizing end-to-end generation pipeline integration and productizing video generation foundation models.</p>
+            <h4>First & Last Frame Lightweight Model Deployment & Cost Optimization</h4>
+            <ul>
+                <li>Addressing the business pain point of "high model inference cost and heavy compute overhead":</li>
+                <li>Conducted structured feature decomposition on live video samples across 5 dimensions (first/last frame difference, industry, pose, product-holding, held object); systematically verified first/last frame lightweight capability against original model across segmented scenarios. Precisely identified significant advantages in "small difference, hand-held rigid object" scenarios, outputting model replacement decisions.</li>
+                <li>Reduced cost from ¥0.44/s to ¥0.35/s with zero quality degradation.</li>
+            </ul>
+            <h4>Quality Inspection Automation</h4>
+            <ul>
+                <li>Addressing the core pain point: "automated inspection inaccurate with many missed/false detections; human inspection precise but low efficiency and high labor cost":</li>
+                <li>Unified full-chain detection standards, built standardized Benchmark datasets to resolve inconsistent evaluation dimensions, categorized typical missed/false detection Badcases; directed high-value problem samples to iteratively train the foundation model, driving algorithm alignment with precise identification logic and accurate Badcase filtering.</li>
+                <li>Ultimately closed the accuracy gap in automated inspection, improving overall quality efficiency by 15%, significantly reducing manual review workload and labor costs.</li>
+            </ul>
+        </div>
+        <div class="exp-body" data-lang="zh">
+            <p>数字人电商直播业务技术测能力支持，优化数字人直播生成全链路衔接与视频生成大模型产品化。</p>
+            <h4>首尾帧轻量化模型落地 & 成本优化</h4>
+            <ul>
+                <li>针对「原有模型推理成本高、算力开销大」的业务痛点：</li>
+                <li>通过直播视频样本做结构化特征拆解，从「首尾差异、行业、人物姿势、是否持品、持品对象」5大维度场景细分；对照真实业务输出结果，系统性校验首尾帧轻量化能力与原有模型在细分场景下的效果一致性。精准定位首尾帧在「小差异、手持刚体」场景具备显著优势，输出模型替换决策。</li>
+                <li>在保证生成效果不降级前提下，原成本0.44/秒降低至0.35/秒。</li>
+            </ul>
+            <h4>质检自动化能力建设</h4>
+            <ul>
+                <li>针对视频质检「机检自动化服务检测不准、漏检误检多，人检精度高但效率低、人力成本大」核心痛点：</li>
+                <li>统一全链路检测标准，搭建标准化Benchmark数据集，解决原有评测维度不统一的问题，梳理漏检／误检典型Badcase与归因分类；把高价值问题样本定向投喂迭代大模型，推动算法持续对齐精准识别逻辑、准确筛选Badcase；</li>
+                <li>最终补齐机检准确率短板，筛选整体质效提升15%，大幅降低人工复审工作量与人力成本。</li>
+            </ul>
+        </div>
+        <div class="exp-gallery">
+            <div class="exp-gallery-grid">
+                <div class="pg-item pg-item--contain">
+                    <img src="baidu-badge.jpg" alt="Baidu employee badge">
+                    <span class="pg-caption" data-lang="en">Baidu ID Badge</span>
+                    <span class="pg-caption" data-lang="zh">百度工牌</span>
+                </div>
+                <div class="pg-item">
+                    <img src="baidu-campus.jpg" alt="Baidu headquarters campus">
+                    <span class="pg-caption" data-lang="en">Baidu HQ Campus</span>
+                    <span class="pg-caption" data-lang="zh">百度总部园区</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="exp-item reveal">
+        <div class="exp-meta">
+            <div class="exp-company" data-lang="en">CRRC</div>
+            <div class="exp-company" data-lang="zh">中国中车</div>
+            <div class="exp-role" data-lang="en">HCI Intern</div>
+            <div class="exp-role" data-lang="zh">人机交互</div>
+            <div class="exp-date">2024.11 — 2025.02</div>
+        </div>
+        <div class="exp-body" data-lang="en">
+            <p>Designed A/B test experiments using eye-tracking technology to collect and analyze data on the application effectiveness of design iteration optimization for the TDCS railway command system dispatching interface.</p>
+            <ul>
+                <li>Addressing the decision-making risk of delayed critical information recognition in the railway TDCS dispatching system, tested design strategies' application effectiveness in railway command system interface optimization through three groups of eye-tracking experiments.</li>
+                <li>"Problem Definition & Evaluation Method Design" — Focused on three levels: layout, components, and details, designing A/B validation experiments using eye-tracking data to replace subjective evaluation as optimization basis. "Experiment Design & Data-Driven Decision Making" — Tested 35 participants using Tobii eye-tracker, completing data collection and processing, quantitatively validating optimization effectiveness, proving significant optimization effects from an objective physiological metrics perspective. "Result Translation & Recommendation Output" — Based on experimental conclusions, formed actionable interface optimization recommendations to support subsequent product iterations.</li>
+                <li>Provided a data-supported methodological paradigm for railway dispatching system interface optimization.</li>
+            </ul>
+        </div>
+        <div class="exp-body" data-lang="zh">
+            <p>通过眼动技术设计ABtest实验，对TDCS铁路指挥系统调度层界面设计迭代优化中的应用效果进行数据收集与分析。</p>
+            <ul>
+                <li>针对铁路TDCS调度系统关键信息识别延迟的决策风险，通过三组眼动实验测试设计策略在铁路指挥系统界面迭代优化中的应用效果。</li>
+                <li>「问题定义与评估方法设计」聚焦"布局、组件、细节"三个层面，设计A/B验证实验，用眼动数据替代主观评价作为优化依据。「实验设计与数据驱动决策」通过Tobii眼动仪测试35名被试人员，完成数据采集与处理，量化验证优化方案的有效性，从客观生理指标层面证明设计策略对调度系统大屏界面的显著优化效果。「结果转化与建议输出」基于实验结论，形成可落地的界面优化建议，支撑后续产品迭代。</li>
+                <li>为铁路调度系统界面优化提供了数据支撑的方法范式。</li>
+            </ul>
+        </div>
+        <div class="exp-gallery">
+            <div class="exp-gallery-grid exp-gallery-grid--2col">
+                <div class="pg-item">
+                    <img src="crrc-lab.jpg" alt="Eye-tracking experiment in lab">
+                    <span class="pg-caption" data-lang="en">User experiment session</span>
+                    <span class="pg-caption" data-lang="zh">用户实验现场</span>
+                </div>
+                <div class="pg-item">
+                    <img src="crrc-eyetracking.png" alt="Wearing Tobii eye-tracking glasses">
+                    <span class="pg-caption" data-lang="en">Tobii eye-tracking equipment</span>
+                    <span class="pg-caption" data-lang="zh">Tobii眼动追踪设备</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="exp-item reveal">
+        <div class="exp-meta">
+            <div class="exp-company" data-lang="en">Beijing Students Federation</div>
+            <div class="exp-company" data-lang="zh">北京市学生联合会</div>
+            <div class="exp-role" data-lang="en">Standing Executive Chairman</div>
+            <div class="exp-role" data-lang="zh">驻会执行主席</div>
+            <div class="exp-date">2023.06 — 2024.06</div>
+        </div>
+        <div class="exp-body" data-lang="en">
+            <p class="exp-summary">Oversaw student union operations across all Beijing universities, leading event planning and cultural outreach, conducting campus sentiment research.</p>
+            <ul>
+                <li>Built a systematic information hub — reviewed and edited 1,000+ internal submissions, led planning and publication of 35 issues of "Internal Information" newsletter, providing high-quality intelligence support for senior decision-makers.</li>
+                <li>Coordinated 10+ national/municipal large-scale events — provided deep operational support for the Belt and Road Forum, Beijing Youth League 15th Congress and other major events, coordinating university resources city-wide.</li>
+                <li>Selected for the first cohort of the Municipal Education Commission's International Organization Talent Training Program. Led a team of nearly 200 Chinese and international students from 49 countries in an off-site International Youth Summer Camp, coordinating government and enterprise digital construction visits and full-event media coverage and promotion.</li>
+            </ul>
+        </div>
+        <div class="exp-body" data-lang="zh">
+            <p class="exp-summary">统筹全市高校学联工作，全面负责市学联学生会组织整体运营，主导活动策划及思想文化宣传，开展高校思想动态调研。</p>
+            <ul>
+                <li>打造系统办公信息中枢，编审团内投稿1000+篇，主导策划并发行成册《团内信息》35期，为上级决策层提供高质量的信息支持。</li>
+                <li>十余项国家级/市级大型活动统筹协调，深度保障"一带一路"高峰论坛、北京团十五大等多项国家/市级重大活动全流程执行，协调全市高校资源。</li>
+                <li>入选市教委首批国际组织人才培养计划。带队来自49个国家近200名中外大学生异地开展国际青年夏令营，对接政企单位数字化建设参访与全活动媒体采集与宣传工作。</li>
+            </ul>
+        </div>
+        <div class="exp-gallery">
+            <div class="exp-gallery-grid">
+                <div class="pg-item pg-item--contain">
+                    <img src="federation-avatar.jpg" alt="Beijing Students Federation avatar">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<hr class="section-rule">
+
+<!-- ══ PROJECTS ══ -->
+<section class="section" id="projects">
+    <div class="sec-header reveal">
+        <div>
+            <span class="sec-num">03</span>
+            <span class="sec-title" data-lang="en">Selected Work</span>
+            <span class="sec-title" data-lang="zh">精选项目</span>
+        </div>
+    </div>
+
+    <div class="proj-list">
+        <div class="proj-item reveal">
+            <div class="proj-left">
+                <h3 data-lang="en">Olympic Sprint — Domestic High-End Competitive Double Sculls Design (National Key Project)</h3>
+                <h3 data-lang="zh">奥运攻坚-高端国产竞技赛艇双人艇设计（国家重点项目）</h3>
+                <div class="proj-tag" data-lang="en">Project Team Leader</div>
+                <div class="proj-tag" data-lang="zh">项目组组长</div>
+                <div class="proj-date">2024.09 — 2025.05</div>
+            </div>
+            <div class="proj-right">
+                <p data-lang="zh"><strong>项目背景：</strong>本项目为国家重点专项，目标是设计并交付具备国际竞争力的国产高端双人赛艇，打破技术垄断，支撑奥运备战。</p>
+                <p data-lang="zh"><strong>主要工作：</strong>「需求挖掘与机会识别」分析赛事高清影像、实地深度访谈运动员，定位"高关注度核心触点"与"人机交互痛点"，明确设计方向。「多方利益协调」统筹艇身体外饰、座舱人机工程布局及桨架结构造型方案，主导完成4轮方案迭代评审。「方案落地」主导涂装系统设计，推动设计方案通过总局验收，形成可复用的设计规范。</p>
+                <p data-lang="zh"><strong>项目成果：</strong>设计方案成功通过国家体育总局验收并投入国家队日常训练，成为2028洛杉矶奥运会备战关键装备。</p>
+                <p data-lang="en"><strong>Background:</strong> This is a national key project aimed at designing and delivering internationally competitive domestic high-end double sculls, breaking technical monopoly and supporting Olympic preparation.</p>
+                <p data-lang="en"><strong>Key Work:</strong> "Demand Discovery & Opportunity Identification" — analyzed high-definition race footage, conducted in-depth field interviews with athletes, identified "high-attention core touchpoints" and "HCI pain points" to clarify design direction. "Multi-stakeholder Coordination" — coordinated hull exterior, cockpit ergonomics layout, and oarlock structural design, leading 4 rounds of iterative design reviews. "Implementation" — led coating system design, drove design approval through national bureau acceptance, forming reusable design specifications.</p>
+                <p data-lang="en"><strong>Outcomes:</strong> Design successfully passed National Sports Administration acceptance and was deployed for national team daily training, becoming key equipment for 2028 LA Olympics preparation.</p>
+            </div>
+            <div class="proj-gallery">
+                <div class="proj-gallery-grid">
+                    <div class="pg-item">
+                        <img src="rowing-field.jpg" alt="Field research at lake">
+                        <span class="pg-caption" data-lang="en">Field research</span>
+                        <span class="pg-caption" data-lang="zh">实地调研</span>
+                    </div>
+                    <div class="pg-item">
+                        <img src="rowing-studio.jpg" alt="Studio work session">
+                        <span class="pg-caption" data-lang="en">Studio iteration</span>
+                        <span class="pg-caption" data-lang="zh">工作室迭代</span>
+                    </div>
+                    <div class="pg-item">
+                        <img src="rowing-team-discuss.jpg" alt="Team design discussion">
+                        <span class="pg-caption" data-lang="en">Design review</span>
+                        <span class="pg-caption" data-lang="zh">方案评审</span>
+                    </div>
+                    <div class="pg-item">
+                        <img src="rowing-spray.jpg" alt="Hull spray painting process">
+                        <span class="pg-caption" data-lang="en">Hull coating process</span>
+                        <span class="pg-caption" data-lang="zh">船体涂装工艺</span>
+                    </div>
+                    <div class="pg-item">
+                        <img src="rowing-exhibit.jpg" alt="Exhibition with finished rowing boat">
+                        <span class="pg-caption" data-lang="en">National acceptance exhibition</span>
+                        <span class="pg-caption" data-lang="zh">国家级验收展示</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="proj-item reveal" style="grid-template-columns:280px 1fr 240px;">
+            <div class="proj-left">
+                <h3 data-lang="en">Beijing Swift Conservation — Smart Nest Box System Design</h3>
+                <h3 data-lang="zh">北京雨燕保护智能巢箱系统设计</h3>
+                <div class="proj-tag" data-lang="en">Core Designer (Independent)</div>
+                <div class="proj-tag" data-lang="zh">核心设计者（独立）</div>
+                <div class="proj-date">2023.09 — 2024.06</div>
+            </div>
+            <div class="proj-right">
+                <p data-lang="zh"><strong>项目简介：</strong>针对北京雨燕因城市筑巢地锐减导致种群下降的生态危机，设计智能人工巢箱系统，解决现有方案使用率低与城市环境割裂痛点。融合鸟类行为研究、建筑场景适配及开源硬件技术，实现繁殖成功率与城市景观融合度双提升。</p>
+                <p data-lang="zh"><strong>主要工作：</strong>基于中国鸟类学会专家访谈，定位当前产品核心痛点。对标国际案例，融合提炼关键创新点，主导设计内置防落卵巢托与疏水系统的智能巢箱，集成Arduino声学招引模块破解使用率瓶颈。</p>
+                <p data-lang="zh"><strong>项目成果：</strong>交付完整产品系统方案，获毕业设计最高评价，获鸟类学会高度评价。</p>
+                <p data-lang="en"><strong>Overview:</strong> Addressing the ecological crisis of Beijing Swift population decline due to urban nesting site reduction, designed a smart artificial nest box system to solve low adoption rates and urban environment disconnection. Integrated avian behavior research, architectural scene adaptation, and open-source hardware technology to enhance both breeding success rate and urban landscape integration.</p>
+                <p data-lang="en"><strong>Key Work:</strong> Based on expert interviews with the China Ornithological Society, identified core product pain points. Benchmarked international cases, synthesized key innovations, led the design of smart nest boxes with built-in anti-egg-fall cradle and drainage system, integrated Arduino acoustic luring module to break through adoption bottleneck.</p>
+                <p data-lang="en"><strong>Outcomes:</strong> Delivered complete product system solution, received highest graduation design evaluation, and highly praised by the China Ornithological Society.</p>
+            </div>
+            <div class="exp-gallery" style="grid-column:3; grid-row:1/span 2; align-self:start;">
+                <div class="exp-gallery-grid" style="grid-template-columns:1fr; gap:0.6rem;">
+                    <div class="pg-item pg-item--contain" style="height:auto;"><img src="swift-portrait.jpg" alt="Swift nest box presentation" style="object-fit:contain; height:auto; max-height:260px;"></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<hr class="section-rule">
+
+<!-- ══ CAMPUS EXPERIENCE ══ -->
+<section class="section" id="leadership">
+    <div class="sec-header reveal">
+        <div>
+            <span class="sec-num">04</span>
+            <span class="sec-title" data-lang="en">Campus Experience</span>
+            <span class="sec-title" data-lang="zh">校园经历</span>
+        </div>
+    </div>
+    <div class="lead-grid reveal" style="grid-template-columns:1fr 280px; gap:2.5rem; background:none;">
+        <div class="lead-item" style="padding:0;">
+            <h3 data-lang="en">Beijing University of Technology Student Union</h3>
+            <h3 data-lang="zh">北京工业大学学生会</h3>
+            <div class="lead-role" data-lang="en">Presidium Member</div>
+            <div class="lead-role" data-lang="zh">主席团</div>
+            <div class="lead-date">2022.06 — 2023.06</div>
+            <div class="lead-desc" data-lang="en"><strong>New Media Matrix Operations & Content Strategy:</strong> Led the official new media platform's operational strategy, planned and executed creative content. Successfully created viral content — single video exceeded 140K views, content series reached 310K+ views. Independently directed the short film "Qian Cheng Si Jin" screened at graduation ceremony campus-wide, greatly enhancing organizational influence and campus cultural reach.</div>
+            <div class="lead-desc" data-lang="zh"><strong>新媒体矩阵运营与内容策划：</strong>主导学生会官方新媒体平台的运营策略，策划并执行创意内容方案。成功打造爆款内容，单条视频累计获得超14万播放量，系列内容获得超31万阅读次数，独立导演短片「前程似锦」在毕业典礼面向全校播放，大力提升组织影响力与校园文化传播度。</div>
+            <div class="lead-desc" data-lang="en"><strong>Large-Scale Event Full-Process Planning & Management:</strong> Fully responsible for annual campus cultural brand event planning and execution, leading resource coordination and implementing 30+ major campus events (graduation ceremony, farewell party, campus singer competition, etc.), ensuring high-quality completion meeting expected goals.</div>
+            <div class="lead-desc" data-lang="zh"><strong>大型活动全流程统筹与管理：</strong>全面负责年度校园文化品牌活动的规划与执行，主导策划、资源协调与落地推进30余项大型校园活动（毕业典礼、毕业歌会、校园歌手大赛等），确保活动高质量完成并达成预期目标。</div>
+        </div>
+        <div style="align-self:start;">
+            <img src="student-union-meeting.jpg" alt="Student Union Meeting" style="width:100%; border-radius:6px; object-fit:contain;" loading="lazy">
+        </div>
+    </div>
+</section>
+
+<hr class="section-rule">
+
+<!-- ══ SKILLS ══ -->
+<section class="section" id="skills">
+    <div class="sec-header reveal">
+        <div>
+            <span class="sec-num">05</span>
+            <span class="sec-title" data-lang="en">Skills</span>
+            <span class="sec-title" data-lang="zh">技能</span>
+        </div>
+    </div>
+
+    <div class="skills-section reveal">
+        <div class="skills-cat" data-lang="en">Product</div>
+        <div class="skills-cat" data-lang="zh">产品</div>
+        <div class="skills-list">
+            <span class="skill-item">Python</span>
+            <span class="skill-item">Figma</span>
+            <span class="skill-item">MoDao</span>
+            <span class="skill-item">Xmind</span>
+            <span class="skill-item">Processon</span>
+        </div>
+    </div>
+    <div class="skills-section reveal">
+        <div class="skills-cat" data-lang="en">AI Tools</div>
+        <div class="skills-cat" data-lang="zh">AI工具</div>
+        <div class="skills-list">
+            <span class="skill-item">WorkBuddy</span>
+            <span class="skill-item">ChatGPT</span>
+            <span class="skill-item">Coze</span>
+            <span class="skill-item">Stitch</span>
+            <span class="skill-item">Cursor</span>
+            <span class="skill-item">Claude</span>
+            <span class="skill-item">Gemini</span>
+            <span class="skill-item">Doubao</span>
+            <span class="skill-item">LobsterAI</span>
+            <span class="skill-item">Claude Code</span>
+            <span class="skill-item">CodeMaker</span>
+            <span class="skill-item">Kimi</span>
+            <span class="skill-item">Qwen</span>
+            <span class="skill-item">DeepSeek</span>
+            <span class="skill-item">8N8</span>
+        </div>
+    </div>
+    <div class="skills-section reveal">
+        <div class="skills-cat" data-lang="en">Creative</div>
+        <div class="skills-cat" data-lang="zh">创意</div>
+        <div class="skills-list">
+            <span class="skill-item">Premiere Pro</span>
+            <span class="skill-item">DaVinci Resolve</span>
+            <span class="skill-item">After Effects</span>
+            <span class="skill-item">Photoshop</span>
+            <span class="skill-item">Illustrator</span>
+            <span class="skill-item">SolidWorks</span>
+            <span class="skill-item">Rhino</span>
+            <span class="skill-item">AutoCAD</span>
+            <span class="skill-item">Arduino</span>
+            <span class="skill-item">Tobii Pro Lab</span>
+        </div>
+    </div>
+</section>
+
+<hr class="section-rule">
+
+<!-- ══ ABOUT ══ -->
+<section class="section" id="about">
+    <div class="sec-header reveal">
+        <div>
+            <span class="sec-num">06</span>
+            <span class="sec-title" data-lang="en">About</span>
+            <span class="sec-title" data-lang="zh">关于我</span>
+        </div>
+    </div>
+    <div class="about-layout reveal">
+        <div class="about-block">
+            <p data-lang="en">In the AI era, the most important quality for a product manager is the ability to quickly keep up with industry and technological changes, effectively use AI tools to deliver real business results. Beyond the ability to continuously learn and adapt, I also possess extensive project coordination experience — planning, communicating, driving progress, and enabling efficient collaboration across different roles. These capabilities have been repeatedly tested and validated through my multiple internships and projects.</p>
+            <p data-lang="en">Meanwhile, having worked directly with diverse organization types and teams, I deeply understand each stakeholder's priorities and concerns. This gives me strong insight — I can quickly see the essence of problems and find feasible paths forward even in complex environments.</p>
+            <p data-lang="en"><strong>I hope to join a team that truly gets things done, working diligently to build great products and create real value.</strong></p>
+
+            <p data-lang="zh">我认为在AI时代，产品经理最重要的是能够快速跟进行业与技术的变化，有效使用AI工具落到实际业务中有效产出成果。除了<strong>持续学习和快速适应</strong>的能力，我还具备丰富的<strong>项目统筹和团队协调经验</strong>，沟通、推进、让不同角色高效协作，这些能力已经在我的多段实习和项目中被反复锻炼和验证过。同时，我一直接触不同环境类型的组织和团队，对各方的关注点和诉求有切身的理解，这让我具备<strong>较强的洞察力</strong>——能更快地看到问题本质，也能在复杂环境中找到可行的推进路径。</p>
+            <p data-lang="zh">希望加入一个真正在做事的团队，踏实地把能力用在对的地方，努力把产品做好，真实创造价值。</p>
+
+            <div class="about-tags">
+                <div class="highlight-item" data-lang="en"><h4>Multimodal AI</h4><p>Agents, digital humans, video gen</p></div>
+                <div class="highlight-item" data-lang="en"><h4>Data-Driven</h4><p>Eye-tracking, A/B testing, benchmarks</p></div>
+                <div class="highlight-item" data-lang="en"><h4>Execution</h4><p>National projects, cross-functional leadership</p></div>
+                <div class="highlight-item" data-lang="zh"><h4>多模态AI</h4><p>Agent、数字人、视频生成</p></div>
+                <div class="highlight-item" data-lang="zh"><h4>数据驱动</h4><p>眼动追踪、A/B测试、基准数据集</p></div>
+                <div class="highlight-item" data-lang="zh"><h4>强执行力</h4><p>国家级项目、跨职能领导力</p></div>
+            </div>
+        </div>
+        <div class="about-photo">
+            <img src="about-portrait.jpg" alt="Yifan Hou">
+        </div>
+    </div>
+</section>
+
+<!-- ══ HIGHLIGHT MOMENT ══ -->
+<div class="highlight-moment reveal">
+    <div class="highlight-moment-inner">
+        <div class="photo-break-img">
+            <img src="IMG_6847.JPG" alt="Yifan presenting at conference">
+        </div>
+        <div class="photo-break-text">
+            <blockquote data-lang="en">"It's not just about knowing the latest tools — it's about using them to solve real problems immediately."</blockquote>
+            <blockquote data-lang="zh">"不只是知道最新的工具，而是第一时间用它解决真实问题。"</blockquote>
+            <cite data-lang="en">AI Tools Presentation to Lanzhou University of Arts and Science, 2025</cite>
+            <cite data-lang="zh">面向兰州文理学院校领导与师生关于AI工具的汇报，2025</cite>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <div class="footer-top">
+        <div class="footer-left">
+            <div class="footer-brand">Yifan Hou</div>
+            <div class="footer-contact">
+                <div class="contact-row" data-lang="en">
+                    <span>Email</span> <a href="mailto:13146049592@163.com">13146049592@163.com</a>
+                </div>
+                <div class="contact-row" data-lang="en">
+                    <span>Interest</span> E-commerce PM / Supply Chain PM
+                </div>
+                <div class="contact-row" data-lang="zh">
+                    <span>邮箱</span> <a href="mailto:13146049592@163.com">13146049592@163.com</a>
+                </div>
+                <div class="contact-row" data-lang="zh">
+                    <span>求职意向</span> 电商产品经理 / 供应链产品经理
+                </div>
+            </div>
+        </div>
+        <div class="footer-social-thumbs">
+            <img src="bilibili-card.png" alt="Bilibili - Yun華" title="Bilibili: Yun華">
+            <img src="xiaohongshu-card.jpg" alt="小红书 - 啥都学点" title="小红书: 啥都学点">
+        </div>
+    </div>
+    <p class="footer-copy">&copy; 2026 Yifan Hou</p>
+</footer>
+
+<script>
+function switchLang(lang) {
+    if (lang === 'zh') {
+        document.body.classList.add('lang-zh');
+        document.documentElement.lang = 'zh-CN';
+    } else {
+        document.body.classList.remove('lang-zh');
+        document.documentElement.lang = 'en';
+    }
+    document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+    document.getElementById('btn-zh').classList.toggle('active', lang === 'zh');
+    localStorage.setItem('preferredLang', lang);
+}
+
+const savedLang = localStorage.getItem('preferredLang');
+if (savedLang) switchLang(savedLang);
+
+const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('vis'); });
+}, { threshold: 0.06, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+document.querySelectorAll('nav a[href^="#"]').forEach(a => {
+    a.addEventListener('click', function(e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+    });
+});
+</script>
+
+</body>
+</html>
