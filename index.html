@@ -213,6 +213,17 @@
             grid-template-columns: 200px 1fr;
         }
         .exp-meta { grid-column: 1; grid-row: 1 / span 3; }
+        .exp-logo {
+            height: 28px; width: auto; margin-bottom: 0.6rem;
+            object-fit: contain; display: block;
+        }
+        .exp-logo-badge {
+            width: 28px; height: 28px; border-radius: 50%;
+            background: #c41e24; color: #fff;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.6rem; font-weight: 700; margin-bottom: 0.6rem;
+            letter-spacing: 0;
+        }
         .exp-body { grid-column: 2; }
         .exp-gallery { grid-column: 3; grid-row: 1 / span 3; align-self: start; }
         .exp-company {
@@ -757,6 +768,7 @@
 
     <div class="exp-item reveal">
         <div class="exp-meta">
+            <img class="exp-logo" src="netease-logo.png" alt="NetEase logo">
             <div class="exp-company" data-lang="en">NetEase</div>
             <div class="exp-company" data-lang="zh">网易</div>
             <div class="exp-role" data-lang="en">AI Product Manager</div>
@@ -806,6 +818,7 @@
 
     <div class="exp-item reveal">
         <div class="exp-meta">
+            <img class="exp-logo" src="baidu-logo.png" alt="Baidu logo">
             <div class="exp-company" data-lang="en">Baidu</div>
             <div class="exp-company" data-lang="zh">百度</div>
             <div class="exp-role" data-lang="en">AI Product Manager</div>
@@ -860,6 +873,7 @@
 
     <div class="exp-item reveal">
         <div class="exp-meta">
+            <img class="exp-logo" src="crrc-logo.png" alt="CRRC logo">
             <div class="exp-company" data-lang="en">CRRC</div>
             <div class="exp-company" data-lang="zh">中国中车</div>
             <div class="exp-role" data-lang="en">HCI Intern</div>
@@ -900,6 +914,7 @@
 
     <div class="exp-item reveal">
         <div class="exp-meta">
+            <div class="exp-logo-badge">学联</div>
             <div class="exp-company" data-lang="en">Beijing Students Federation</div>
             <div class="exp-company" data-lang="zh">北京市学生联合会</div>
             <div class="exp-role" data-lang="en">Standing Executive Chairman</div>
